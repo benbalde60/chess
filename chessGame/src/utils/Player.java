@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import board.Board;
 import pieces.Piece;
-
+/**
+ * public class for Player, setting the attributes of the players determined by user input
+ */
 public class Player {
 	ArrayList<Piece> pieces;
 	//Board board;

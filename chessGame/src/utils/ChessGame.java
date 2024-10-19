@@ -3,11 +3,13 @@ package utils;
 import java.util.Scanner;
 
 import board.Board;
-
+/**
+ * public class for ChessGame, continuously running and prompting the players for input then executing thier input as moves in game
+ */
 public class ChessGame {
-
-	
-
+/**
+ * Main executes the primary functions of the chessGame including prompting players for names, team colors then awaiting input for moves
+ */
 	public static void main(String[] args) {
 		Board gameBoard = new Board();
 		Scanner scnr = new Scanner(System.in);
