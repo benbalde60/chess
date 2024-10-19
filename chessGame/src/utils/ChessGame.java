@@ -8,26 +8,29 @@ public class ChessGame {
 
 	public static void main(String[] args) {
 		Board gameBoard = new Board();
-		Player player1 = new Player(gameBoard.getPieces(), "b", "Ben");
-		Player player2 = new Player(gameBoard.getPieces(),"w","Branden");
+		Scanner scnr = new Scanner(System.in);
+		System.out.println("What are the names of the players?");
+		String p1Name = scnr.next();
+		String p2Name = scnr.next();
+		Player player1 = new Player(gameBoard.getPieces(), "b", p1Name);
+		Player player2 = new Player(gameBoard.getPieces(),"w",p2Name);
 		int optionSelected = -1;
 		int turn =1;
-		Scanner scnr = new Scanner(System.in);
+		System.out.println("------------------------------------------------------------\n"
+				+"------------------------------------------------------------\n"+
+				"              WELCOME TO OUR CHESS GAME!!\n"+
+				"------------------------------------------------------------\n"+
+				"------------------------------------------------------------");
+		System.out.println("Hello "+player1.name+" and "+player2.name);
 		do {
 			if(turn==1) {
-				System.out.println("------------------------------------------------------------\n"
-						          +"------------------------------------------------------------\n"+
-						           "              WELCOME TO OUR CHESS GAME!!\n"+
-						           "------------------------------------------------------------\n"+
-						           "------------------------------------------------------------");
-				System.out.println("Hello "+player1.name+" and "+player2.name);
 				gameBoard.printBoard();
 				System.out.println("White goes first: which piece would like to move and where? enter positions like E1 and A4");
 				String pos = scnr.next();
 				//convertToCor(pos);
 				String pos2=scnr.next();
 				gameBoard.move(convertToCor(pos),convertToCor(pos2));
-				gameBoard.printBoard();
+				//gameBoard.printBoard();
 			}
 		optionSelected++;
 		}while(optionSelected!=4);
