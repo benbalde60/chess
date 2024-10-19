@@ -9,11 +9,20 @@ import pieces.Queen;
 import pieces.Rook;
 
 public class Board {
-	String chessBoard[][] = new String[9][9];
+	String chessBoard[][] = new String[9][9]; 
 	ArrayList<Piece> pieces = new ArrayList<>(); 
+	
+	/** 
+	 * return all pieces in board class
+	 * @return ArrayList<Piece>
+	 */
 	public ArrayList<Piece> getPieces() {
 		return pieces;
 	}
+	/**
+	 * Default constructor for new board. Populating board with pieces at their initial positions
+	 * Sets each piece color and coordianates accord to piece class
+	 */
 	public Board() {
 		int counter= 8;
 		char charCounter = 'A';
@@ -244,6 +253,11 @@ public class Board {
 					}
 			}
 		}
+	/**
+	 * Method that moves individual piece on board according to coordinate params
+	 * @param a1 coords indicating where piece of interest is on board
+	 * @param a2 coords indicated where to move the piece of interest
+	 */
 	public void move(int []a1,int [] a2) {
 		if(chessBoard[a1[0]][a1[1]]=="  "||chessBoard[a1[0]][a1[1]]=="##") {
 			System.out.println("invalid move");
@@ -258,6 +272,9 @@ public class Board {
 		}
 	   }
 	}
+	/**
+	 * Prints board
+	 */
 	public void printBoard() {
 		for(int i=0;i<9;i++) {
 			for(int j=0;j<9;j++) {

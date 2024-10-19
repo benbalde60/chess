@@ -6,6 +6,8 @@ import board.Board;
 
 public class ChessGame {
 
+	
+
 	public static void main(String[] args) {
 		Board gameBoard = new Board();
 		Scanner scnr = new Scanner(System.in);
@@ -36,6 +38,13 @@ public class ChessGame {
 		}while(optionSelected!=4);
 	}
 
+	/** 
+	 * @param position
+	 * 
+	 * Method takes string position entered by user and converts to index of ints
+	 * 
+	 * @return int[]
+	 */
 	private static int[] convertToCor(String position) {
 		// TODO Auto-generated method stub
 		char first = position.charAt(0);
@@ -44,12 +53,5 @@ public class ChessGame {
 		int row = 8-(second-'1');
 		return new int[]{row,col};
 	}
-	public static String convertToPos(int row,int col) {
-		char rowC = (char)('A' +col);
-		int colC = 8-row;
-		return""+rowC+colC;
-	}
-
-	
 
 }

@@ -10,6 +10,12 @@ public class Player {
 	//Board board;
 	String color;
 	String name;
+	/**
+	 * Constructor that creates player object
+	 * @param allPieces List that contains all pieces belonging to player class
+	 * @param color Assigns black or white color
+	 * @param name String of player name besed on input
+	 */
 	public Player(ArrayList<Piece> allPieces/*Board board*/,String color,String name) {
 	//	this.board = board;
 		this.name = name;
@@ -32,6 +38,9 @@ public class Player {
 			}			
 		}
 	}
+	/**
+	 * Prints the board pieces 
+	 */
 	public void printPieces() {
 		for(int i=0;i<pieces.size();i++) {
 			System.out.println(pieces.get(i).getColor()+pieces.get(i).getTitle());
