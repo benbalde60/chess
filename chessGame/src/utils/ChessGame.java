@@ -25,16 +25,15 @@ public class ChessGame {
 		do {
 			if(turn==1) {
 				gameBoard.printBoard();
+				if(optionSelected==-1) {
 				System.out.println("White goes first: which piece would like to move and where? enter positions like E1 and A4");
+				}
 				String pos = scnr.next();
-				//convertToCor(pos);
 				String pos2=scnr.next();
 				gameBoard.move(convertToCor(pos),convertToCor(pos2));
-				//gameBoard.printBoard();
 			}
 		optionSelected++;
 		}while(optionSelected!=4);
-		//gameBoard.printBoard();
 	}
 
 	private static int[] convertToCor(String position) {
