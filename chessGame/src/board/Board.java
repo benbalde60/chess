@@ -16,7 +16,7 @@ public class Board {
 	
 	/** 
 	 * return all pieces in board class
-	 * @return ArrayList<Piece>
+	 * @return {@code ArrayList<>} containing the pieces on the board.
 	 */
 	public ArrayList<Piece> getPieces() {
 		return pieces;

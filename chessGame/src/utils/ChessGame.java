@@ -16,8 +16,8 @@ public class ChessGame {
 		System.out.println("What are the names of the players?");
 		String p1Name = scnr.next();
 		String p2Name = scnr.next();
-		Player player1 = new Player(gameBoard.getPieces(), "b", p1Name);
-		Player player2 = new Player(gameBoard.getPieces(),"w",p2Name);
+		Player player1 = new Player(gameBoard.getPieces(), "w", p1Name);
+		Player player2 = new Player(gameBoard.getPieces(),"b",p2Name);
 		int optionSelected = -1;
 		int turn =1;
 		System.out.println("------------------------------------------------------------\n"
