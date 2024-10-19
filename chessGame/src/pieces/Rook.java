@@ -1,5 +1,7 @@
 package pieces;
-
+/**
+ * public class for Rook, inheriting piece class functions and methods
+ */
 public class Rook extends Piece {
 	/**
 	 * constructor for rook piece 

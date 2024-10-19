@@ -1,5 +1,7 @@
 package pieces;
-
+/**
+ * public class for Bishop, inheriting piece class functions and methods
+ */
 public class Bishop extends Piece {
 	/**
 	 * constructor for bishop piece 

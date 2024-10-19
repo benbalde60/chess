@@ -7,7 +7,9 @@ import pieces.Pawn;
 import pieces.Piece;
 import pieces.Queen;
 import pieces.Rook;
-
+/**
+ * public class for board, assembling a 9x9 board using an array list. Placing each piece in it's appropriate place
+ */
 public class Board {
 	String chessBoard[][] = new String[9][9]; 
 	ArrayList<Piece> pieces = new ArrayList<>(); 

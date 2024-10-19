@@ -19,6 +19,7 @@ public abstract class Piece {
 	}
 	
 	/** 
+	 * metod returns coords 
 	 * @return int[] returns coordinate vector
 	 */
 	public int[] getCor() {
@@ -40,7 +41,7 @@ public abstract class Piece {
 	}
 	/**
 	 * returns string position
-	 * @return
+	 * @return position string 
 	 */
 	public String getPosition() {
 		return position;
@@ -56,7 +57,7 @@ public abstract class Piece {
 	}
 	/**
 	 * Returns the name for board piece 
-	 * @return
+	 * @return title string for piece
 	 */ 
 	public String getTitle() {
 		return title;

@@ -1,5 +1,7 @@
 package pieces;
-
+/**
+ * public class for Knight, inheriting piece class functions and methods
+ */
 public class Knight extends Piece {
 	/**
 	 * constructor for knight piece 

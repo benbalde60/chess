@@ -1,5 +1,7 @@
 package pieces;
-
+/**
+ * public class for Pawn, inheriting piece class functions and methods
+ */
 public class Pawn extends Piece {
 	/**
 	 * constructor for pawn piece 
