@@ -16,8 +16,8 @@ public class ChessGame {
 		System.out.println("What are the names of the players?");
 		String p1Name = scnr.next();
 		String p2Name = scnr.next();
-		Player player1 = new Player(gameBoard.getPieces(), "w", p1Name);
-		Player player2 = new Player(gameBoard.getPieces(),"b",p2Name);
+		Player player1 = new Player(gameBoard.getPieces(),gameBoard ,"w", p1Name);
+		Player player2 = new Player(gameBoard.getPieces(),gameBoard,"b",p2Name);
 		int optionSelected = -1;
 		int turn =1;
 		System.out.println("------------------------------------------------------------\n"
@@ -34,7 +34,12 @@ public class ChessGame {
 				}
 				String pos = scnr.next();
 				String pos2=scnr.next();
-				gameBoard.move(convertToCor(pos),convertToCor(pos2));
+				//0for(int i =0;i<16;i++) {
+					//if(player1.getPieces().get(i).getPosition().equals(pos)) {
+					//	player1.PossibleMoves(player1.getPieces().get(i));
+					//}
+				//}
+				player1.move(Helpers.convertToCor(pos),Helpers.convertToCor(pos2));
 			}
 		optionSelected++;
 		}while(optionSelected!=4);
@@ -47,13 +52,6 @@ public class ChessGame {
 	 * 
 	 * @return int[]
 	 */
-	private static int[] convertToCor(String position) {
-		// TODO Auto-generated method stub
-		char first = position.charAt(0);
-		char second = position.charAt(1);
-		int col = first-'A'+1;
-		int row = 8-(second-'1');
-		return new int[]{row,col};
-	}
+
 
 }

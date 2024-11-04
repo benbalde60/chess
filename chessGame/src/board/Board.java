@@ -1,5 +1,6 @@
 package board;
 import java.util.ArrayList;
+
 import pieces.Bishop;
 import pieces.King;
 import pieces.Knight;
@@ -7,6 +8,7 @@ import pieces.Pawn;
 import pieces.Piece;
 import pieces.Queen;
 import pieces.Rook;
+import utils.Helpers;
 /**
  * public class for board, assembling a 9x9 board using an array list. Placing each piece in it's appropriate place
  */
@@ -25,6 +27,9 @@ public class Board {
 	 * Default constructor for new board. Populating board with pieces at their initial positions
 	 * Sets each piece color and coordianates accord to piece class
 	 */
+	public String[][] getChessBoard() {
+		return chessBoard;
+	}
 	public Board() {
 		int counter= 8;
 		char charCounter = 'A';
@@ -260,12 +265,19 @@ public class Board {
 	 * @param a1 coords indicating where piece of interest is on board
 	 * @param a2 coords indicated where to move the piece of interest
 	 */
-	public void move(int []a1,int [] a2) {
+	
+	/*public void move(int []a1,int [] a2) {
 		if(chessBoard[a1[0]][a1[1]]=="  "||chessBoard[a1[0]][a1[1]]=="##") {
 			System.out.println("invalid move");
 		}else if(chessBoard[a2[0]][a2[1]].charAt(0)==chessBoard[a1[0]][a1[1]].charAt(0)){
 			System.out.println("invalid move ally at this location");
 		}else {
+			for(int i=0;i<pieces.size();i++) {
+				if(pieces.get(i).getCor()[0]==a1[0] && pieces.get(i).getCor()[1]==a1[1]) {
+					pieces.get(i).setCoordinates(a2[0],a2[1]);
+					pieces.get(i).setPosition(Helpers.convertCorToPos(pieces.get(i).getCor()));
+				}
+			}
 		chessBoard[a2[0]][a2[1]]=chessBoard[a1[0]][a1[1]];
 		if((a1[0]%2!= 0 && a1[1]%2==0) ||(a1[0]%2==0 && a1[1]%2!=0)) {
 			chessBoard[a1[0]][a1[1]]= "##";
@@ -273,7 +285,8 @@ public class Board {
 		chessBoard[a1[0]][a1[1]]= "  ";
 		}
 	   }
-	}
+	}*/
+
 	/**
 	 * Prints board
 	 */
@@ -289,5 +302,5 @@ public class Board {
 		}
 		
 	}
-
-}
+	
+	}
