@@ -1,5 +1,9 @@
 package pieces;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The attributes of a piece
  */
@@ -8,6 +12,7 @@ public abstract class Piece {
 	String color;
 	String position;
 	int [] coordinates= {0,0};
+	Set<String>possibleMoves = new HashSet<>();
 	Piece() {
 		this.title = "none";
 		this.color="none";
@@ -70,7 +75,11 @@ public abstract class Piece {
 		return color;
 	}
 
-	public void possibleMoves() {
+	public Set<String> getPossibleMoves() {
+		return possibleMoves;
+	}
+	public void printPossibleMoves() {
+		System.out.println(possibleMoves.toString());
 	}
 	public void move() {
 	}
