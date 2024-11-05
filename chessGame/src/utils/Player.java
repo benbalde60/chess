@@ -15,6 +15,7 @@ public class Player {
 	Board chessBoard = new Board();
 	String color;
 	String name;
+	boolean turnEnded = false;
 	/**
 	 * Constructor that creates player object
 	 * @param allPieces List that contains all pieces belonging to player class
@@ -44,6 +45,15 @@ public class Player {
 			}			
 		}
 	}
+	public String getName() {
+		return name;
+	}
+	public boolean getTurnEnded() {
+		return turnEnded;
+	}
+	public void setTurnEnded(boolean value) {
+		this.turnEnded = value;
+	}
 	public void resetPossibleMoves(Piece piece) {
 		piece.getPossibleMoves().clear();
 	}
@@ -53,19 +63,42 @@ public class Player {
 		}else {
 		switch(piece.getTitle()) {
 		case "p":
-			if(piece.getPosition().substring(1).equals("2")) {
+			if(piece.getPosition().substring(1).equals("2") && piece.getValid() && piece.getColor()=="w") {
 				int[] cor = piece.getCor();
 				cor[0]-=1;
 				Helpers.convertCorToPos(cor);
-				if(piece.getPossibleMoves().size()>=2) {
-				resetPossibleMoves(piece);
-				}
+			//	if(piece.getPossibleMoves().size()>=2) {
+			//	resetPossibleMoves(piece);
+		//		}
 				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
 				cor[0]-=1;
 				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
 			//	for(String moves: piece.getPossibleMoves() ) {
 				//	System.out.println(moves);
 				//}
+			} else if(piece.getColor()=="w" && piece.getValid()){
+				resetPossibleMoves(piece);
+				int [] cor = piece.getCor();
+				cor[0]-=1;
+				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
+			}else if(piece.getPosition().substring(1).equals("7") && piece.getValid()) {
+				int[] cor = piece.getCor();
+				cor[0]+=1;
+				Helpers.convertCorToPos(cor);
+			//	if(piece.getPossibleMoves().size()>=2) {
+			//	resetPossibleMoves(piece);
+		//		}
+				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
+				cor[0]+=1;
+				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
+			//	for(String moves: piece.getPossibleMoves() ) {
+				//	System.out.println(moves);
+				//}
+			} else if(piece.getColor()=="b" && piece.getValid()) {
+				resetPossibleMoves(piece);
+				int [] cor = piece.getCor();
+				cor[0]+=1;
+				piece.getPossibleMoves().add(Helpers.convertCorToPos(cor));
 			}
 			break;
 		 }
@@ -83,9 +116,12 @@ public class Player {
 					pieces.get(i).printPossibleMoves();
 					if(!pieces.get(i).getPossibleMoves().contains(Helpers.convertCorToPos(a2))) {
 					  System.out.println("Invalid move");
-					 // resetPossibleMoves(pieces.get(i));
+					  pieces.get(i).setValid(false);
+					  //resetPossibleMoves(pieces.get(i));
 					}else {
-					resetPossibleMoves(pieces.get(i));
+					//resetPossibleMoves(pieces.get(i));
+					pieces.get(i).setValid(true);
+					setTurnEnded(true);
 					pieces.get(i).setCoordinates(a2[0],a2[1]);
 					pieces.get(i).setPosition(Helpers.convertCorToPos(pieces.get(i).getCor()));
 					chessBoard.getChessBoard()[a2[0]][a2[1]]=chessBoard.getChessBoard()[a1[0]][a1[1]];
@@ -96,7 +132,8 @@ public class Player {
 					}
 					}
 				}
-				resetPossibleMoves(pieces.get(i));			}
+				//resetPossibleMoves(pieces.get(i));			
+				}
 	   }
 	}
 	
