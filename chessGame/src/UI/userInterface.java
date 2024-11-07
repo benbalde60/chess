@@ -2,6 +2,8 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class userInterface {
 
@@ -10,6 +12,8 @@ public class userInterface {
             "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
             "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F"
     };
+    private static JLabel clickedPieceLabel =null;
+    private static int clickedRow=-1,clickedCol =-1;
 
     public static void main(String[] args) {
         // Create the main frame for the chess board
@@ -48,6 +52,14 @@ public class userInterface {
 
                 // Add the JLabel to the square and the square to the board
                 panelSquare.add(square);
+                final int currentRow = row;
+                final int currentCol = col;
+               panelSquare.addMouseListener(new MouseAdapter() {
+            	   public void mouseClicked(MouseEvent e) {
+            		   handleSquareClick(square,currentRow,currentCol);
+            	   }
+
+               });
                 boardPanel.add(panelSquare);
             }
         }
@@ -88,5 +100,24 @@ public class userInterface {
             return (row == 1) ? UNICODE_PIECES[5] : UNICODE_PIECES[11]; // Pawns
         }
         return ""; // Empty space for non-piece areas
+    }
+    private static void handleSquareClick(JLabel square, int row, int col) {
+    	// TODO Auto-generated method stub
+    	String piece = square.getText();
+    	if(clickedPieceLabel==null && !piece.isEmpty()) {
+    		clickedPieceLabel = square;
+    		clickedRow = row;
+    		clickedCol =col;
+    		square.setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
+    	} else if(clickedPieceLabel != null){
+    		clickedPieceLabel.setBorder(null);
+    		square.setText(clickedPieceLabel.getText());
+    		clickedPieceLabel.setText("");
+    		
+    		clickedPieceLabel = null;
+    		clickedRow = -1;
+    		clickedCol = -1;
+    		
+    	}
     }
 }
