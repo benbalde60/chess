@@ -27,12 +27,14 @@ public class ChessGame {
 				"------------------------------------------------------------");
 		System.out.println("Hello "+player1.name+" and "+player2.name);
 		do {
-			if(turn==1) {
+			if(turn%2!=0) {
+				while(!player1.turnEnded) {
 				gameBoard.printBoard();
-				if(optionSelected==-1) {
-				System.out.println("White goes first: which piece would like to move and where? enter positions like E1 and A4");
+				if(turn==1) {
+						System.out.println("White goes first: which piece would like to move and where? enter positions like E1 and A4");
 				}
-				String pos = scnr.next();
+				System.out.println("This is "+player1.getName()+"'s turn moves are entered by row/columns ex: E2 E4");
+ 				String pos = scnr.next();
 				String pos2=scnr.next();
 				//0for(int i =0;i<16;i++) {
 					//if(player1.getPieces().get(i).getPosition().equals(pos)) {
@@ -41,7 +43,26 @@ public class ChessGame {
 				//}
 				player1.move(Helpers.convertToCor(pos),Helpers.convertToCor(pos2));
 			}
-		optionSelected++;
+				turn++;
+				player1.setTurnEnded(false);
+			} else {
+				while(!player2.turnEnded) {
+					gameBoard.printBoard();
+					System.out.println("This is "+player2.getName()+"'s turn moves are entered by row/columns ex: E2 E4");
+
+	 				String pos = scnr.next();
+					String pos2=scnr.next();
+					//0for(int i =0;i<16;i++) {
+						//if(player1.getPieces().get(i).getPosition().equals(pos)) {
+						//	player1.PossibleMoves(player1.getPieces().get(i));
+						//}
+					//}
+					player2.move(Helpers.convertToCor(pos),Helpers.convertToCor(pos2));
+				}
+					turn++;
+					player2.setTurnEnded(false);
+			optionSelected++;
+			}
 		}while(optionSelected!=4);
 	}
 

@@ -10,6 +10,7 @@ import java.util.Set;
 public abstract class Piece {
 	String title;
 	String color;
+	boolean valid;
 	String position;
 	int [] coordinates= {0,0};
 	Set<String>possibleMoves = new HashSet<>();
@@ -17,6 +18,7 @@ public abstract class Piece {
 		this.title = "none";
 		this.color="none";
 		this.position= "none";
+		this.valid=true;
 	}
 	Piece(String color,String position) {
 		this.color = color;
@@ -27,6 +29,12 @@ public abstract class Piece {
 	 * metod returns coords 
 	 * @return int[] returns coordinate vector
 	 */
+	public void setValid(boolean truthValue) {
+		this.valid = truthValue;
+	}
+	public boolean getValid() {
+		return valid;
+	}
 	public int[] getCor() {
 		return coordinates;
 	}
