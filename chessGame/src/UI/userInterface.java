@@ -162,22 +162,39 @@ public class userInterface {
 
     // Extra Credit 1: Save game state to a file
     private static void saveGame() {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savedGame.ser"))) {
-            out.writeObject(moveHistory); // Save move history
-        } catch (IOException e) {
-            e.printStackTrace();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Game");
+        int result = fileChooser.showSaveDialog(null);
+    
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(selectedFile))) {
+                out.writeObject(moveHistory); // Save move history
+                // You can add other state data like the board state here if needed
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+    
 
     // Extra Credit 1: Load game state from a file
     private static void loadGame() {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("savedGame.ser"))) {
-            moveHistory = (List<String>) in.readObject(); // Load move history
-            historyArea.setText(String.join("\n", moveHistory)); // Display loaded moves
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Load Game");
+        int result = fileChooser.showOpenDialog(null);
+    
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(selectedFile))) {
+                moveHistory = (List<String>) in.readObject(); // Load move history
+                historyArea.setText(String.join("\n", moveHistory)); // Display loaded moves
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
+    
 
     // Extra Credit 2: Open settings window
     private static void openSettingsWindow() {
