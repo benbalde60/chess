@@ -145,12 +145,27 @@ public class userInterface {
             String move = "Moved " + clickedPieceLabel.getText() + " from (" + clickedRow + ", " + clickedCol + ") to (" + row + ", " + col + ")";
             moveHistory.add(move);
             historyArea.append(move + "\n");
+
+            String removedPiece = square.getText();
+
             square.setText(clickedPieceLabel.getText());
             clickedPieceLabel.setText("");
+
+            checkCondition(removedPiece);
 
             clickedPieceLabel = null;
             clickedRow = -1;
             clickedCol = -1;
+        }
+    }
+
+    private static void checkCondition(String removedPiece){
+        String whiteKing = "\u2654";
+        String blackKing = "\u265A";
+        if ((removedPiece.equals(blackKing)) || (removedPiece.equals(whiteKing)));
+        {
+            JOptionPane.showMessageDialog(null, "King's Dead 💀", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         }
     }
 
