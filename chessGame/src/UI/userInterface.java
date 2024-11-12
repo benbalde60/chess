@@ -7,6 +7,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A graphical user interface for a simple chess game.
+ */
 public class userInterface {
 
     // Unicode characters for chess pieces
@@ -20,19 +23,23 @@ public class userInterface {
     private static Color lightColor = new Color(240, 217, 181); // Default light color
     private static Color darkColor = new Color(181, 136, 99);   // Default dark color
 
-    // Extra Credit 3: Game History
+    // Game history list
     private static List<String> moveHistory = new ArrayList<>();
     private static JTextArea historyArea;
     private static JPanel boardPanel;
     private static JFrame mainFrame;
     private static String[][] boardState = new String[8][8];
 
+    /**
+     * Main method to start the chess game UI.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         mainFrame = new JFrame("Chess Board");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
 
-        // Extra Credit 1: Menu Bar with Game Controls
         JMenuBar menuBar = new JMenuBar();
 
         JMenuItem newGameItem = new JMenuItem("New Game");
@@ -59,7 +66,6 @@ public class userInterface {
 
         createBoard();
 
-        // Extra Credit 3: Game History Panel with Undo Button
         JPanel historyPanel = new JPanel(new BorderLayout());
         historyArea = new JTextArea();
         historyArea.setEditable(false);
@@ -77,12 +83,14 @@ public class userInterface {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Creates and initializes the chessboard with pieces in their default positions.
+     */
     private static void createBoard() {
         boardPanel.removeAll(); // Clear the existing board
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-            	String piece = boardState[row][col];
                 JLabel square = new JLabel(getPieceUnicode(row, col));
                 square.setFont(new Font("Serif", Font.BOLD, 32));
                 square.setHorizontalAlignment(JLabel.CENTER);
@@ -113,6 +121,13 @@ public class userInterface {
         boardPanel.repaint();
     }
 
+    /**
+     * Gets the Unicode representation of a chess piece for the specified row and column.
+     *
+     * @param row The row of the piece.
+     * @param col The column of the piece.
+     * @return The Unicode character representing the piece.
+     */
     private static String getPieceUnicode(int row, int col) {
         if (row == 0 || row == 7) {
             int offset = (row == 0) ? 0 : 6;
@@ -137,6 +152,13 @@ public class userInterface {
         return "";
     }
 
+    /**
+     * Handles a click event on a chessboard square, allowing piece selection and movement.
+     *
+     * @param square The JLabel representing the square.
+     * @param row    The row of the square clicked.
+     * @param col    The column of the square clicked.
+     */
     private static void handleSquareClick(JLabel square, int row, int col) {
         String piece = square.getText();
         if (clickedPieceLabel == null && !piece.isEmpty()) {
@@ -160,21 +182,32 @@ public class userInterface {
             clickedCol = -1;
         }
     }
-    private static void checkCondition(String removedPiece) {
-        String whiteKing = "\u2654";  // Unicode for white king
-        String blackKing = "\u265A";  // Unicode for black king
 
-        // Check if the removed piece is either the white or black king
+    /**
+     * Checks if a removed piece is a king, ending the game if so.
+     *
+     * @param removedPiece The piece that was removed.
+     */
+    private static void checkCondition(String removedPiece) {
+        String whiteKing = "\u2654";
+        String blackKing = "\u265A";
+
         if (removedPiece.equals(blackKing) || removedPiece.equals(whiteKing)) {
             JOptionPane.showMessageDialog(null, "                 King's Dead 💀 \nDeath becomes my blade once more", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);  // Exit the game
+            System.exit(0);
         }
     }
 
+    /**
+     * Resets the chessboard to its initial state.
+     */
     private static void resetBoard() {
-        createBoard(); // Reset the board to its initial state
+        createBoard();
     }
 
+    /**
+     * Saves the game state and move history to a file.
+     */
     private static void saveGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Game");
@@ -183,14 +216,17 @@ public class userInterface {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(selectedFile))) {
-                out.writeObject(moveHistory); // Save move history
-                out.writeObject(boardState); // Save board state
+                out.writeObject(moveHistory);
+                out.writeObject(boardState);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Loads a previously saved game state and move history from a file.
+     */
     private static void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Load Game");
@@ -199,16 +235,19 @@ public class userInterface {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(selectedFile))) {
-                moveHistory = (List<String>) in.readObject(); // Load move history
-                boardState = (String[][]) in.readObject(); // Load board state
-                historyArea.setText(String.join("\n", moveHistory)); // Display loaded moves
-                createBoard(); // Refresh board with loaded state
+                moveHistory = (List<String>) in.readObject();
+                boardState = (String[][]) in.readObject();
+                historyArea.setText(String.join("\n", moveHistory));
+                createBoard();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Opens a settings window allowing customization of board color, piece style, and board size.
+     */
     private static void openSettingsWindow() {
         JFrame settingsFrame = new JFrame("Settings");
         settingsFrame.setSize(300, 200);
@@ -218,7 +257,7 @@ public class userInterface {
         boardColorButton.addActionListener(e -> {
             lightColor = JColorChooser.showDialog(null, "Choose Light Square Color", lightColor);
             darkColor = JColorChooser.showDialog(null, "Choose Dark Square Color", darkColor);
-            createBoard(); // Apply new colors to board
+            createBoard();
         });
         settingsFrame.add(boardColorButton);
 
@@ -242,7 +281,7 @@ public class userInterface {
             );
             if (size != null) {
                 boardPanel.setPreferredSize(new Dimension(Integer.parseInt(size), Integer.parseInt(size)));
-                mainFrame.pack(); // Resize main frame to fit new board size
+                mainFrame.pack();
             }
         });
         settingsFrame.add(boardSizeButton);
@@ -250,6 +289,9 @@ public class userInterface {
         settingsFrame.setVisible(true);
     }
 
+    /**
+     * Reverts the last move made on the chessboard.
+     */
     private static void undoLastMove() {
         if (!moveHistory.isEmpty()) {
             moveHistory.remove(moveHistory.size() - 1);
@@ -257,5 +299,3 @@ public class userInterface {
         }
     }
 }
-
-
