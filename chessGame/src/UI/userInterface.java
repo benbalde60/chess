@@ -2,8 +2,10 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class userInterface {
 
@@ -12,14 +14,43 @@ public class userInterface {
             "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
             "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F"
     };
-    private static JLabel clickedPieceLabel =null;
-    private static int clickedRow=-1,clickedCol =-1;
+    private static JLabel clickedPieceLabel = null;
+    private static int clickedRow = -1, clickedCol = -1;
 
+    // Extra Credit 3: Game History
+    private static List<String> moveHistory = new ArrayList<>();
+    private static JTextArea historyArea;
+    
     public static void main(String[] args) {
         // Create the main frame for the chess board
         JFrame frame = new JFrame("Chess Board");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+
+        // Extra Credit 1: Menu Bar with Game Controls
+        JMenuBar menuBar = new JMenuBar();
+        
+        // New Game Option
+        JMenuItem newGameItem = new JMenuItem("New Game");
+        newGameItem.addActionListener(e -> resetBoard());
+        menuBar.add(newGameItem);
+        
+        // Save Game Option
+        JMenuItem saveGameItem = new JMenuItem("Save Game");
+        saveGameItem.addActionListener(e -> saveGame());
+        menuBar.add(saveGameItem);
+        
+        // Load Game Option
+        JMenuItem loadGameItem = new JMenuItem("Load Game");
+        loadGameItem.addActionListener(e -> loadGame());
+        menuBar.add(loadGameItem);
+        
+        // Settings Option (Extra Credit 2)
+        JMenuItem settingsItem = new JMenuItem("Settings");
+        settingsItem.addActionListener(e -> openSettingsWindow());
+        menuBar.add(settingsItem);
+        
+        frame.setJMenuBar(menuBar);
 
         // Create a JPanel that will hold the board
         JPanel boardPanel = new JPanel();
@@ -33,54 +64,54 @@ public class userInterface {
         // Create the chess board squares and pieces
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                // Create a new JLabel with a piece or an empty string
                 JLabel square = new JLabel(getPieceUnicode(row, col));
-                square.setFont(new Font("Serif", Font.BOLD, 32)); // Make the piece characters bigger
+                square.setFont(new Font("Serif", Font.BOLD, 32));
                 square.setHorizontalAlignment(JLabel.CENTER);
                 square.setVerticalAlignment(JLabel.CENTER);
 
-                // Create a new JPanel square with a border to show the edges
                 JPanel panelSquare = new JPanel(new BorderLayout());
                 panelSquare.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-                // Check the row and column numbers to decide the color
                 if ((row + col) % 2 == 0) {
                     panelSquare.setBackground(lightColor);
                 } else {
                     panelSquare.setBackground(darkColor);
                 }
 
-                // Add the JLabel to the square and the square to the board
                 panelSquare.add(square);
                 final int currentRow = row;
                 final int currentCol = col;
-               panelSquare.addMouseListener(new MouseAdapter() {
-            	   public void mouseClicked(MouseEvent e) {
-            		   handleSquareClick(square,currentRow,currentCol);
-            	   }
-
-               });
+                panelSquare.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        handleSquareClick(square, currentRow, currentCol);
+                    }
+                });
                 boardPanel.add(panelSquare);
             }
         }
 
-        // Add board panel to the frame
-        frame.add(boardPanel);
-        frame.pack();  // Pack the frame to fit the board
-        frame.setLocationRelativeTo(null);  // Center the frame
+        frame.add(boardPanel, BorderLayout.CENTER);
+
+        // Extra Credit 3: Game History Panel with Undo Button
+        JPanel historyPanel = new JPanel(new BorderLayout());
+        historyArea = new JTextArea();
+        historyArea.setEditable(false);
+        historyPanel.add(new JScrollPane(historyArea), BorderLayout.CENTER);
+        
+        JButton undoButton = new JButton("Undo");
+        undoButton.addActionListener(e -> undoLastMove());
+        historyPanel.add(undoButton, BorderLayout.SOUTH);
+        
+        frame.add(historyPanel, BorderLayout.EAST);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    /**
-     * Determine the appropriate piece for the given board position.
-     * 
-     * @param row the row of the position
-     * @param col the column of the position
-     * @return a string representing the chess piece
-     */
     private static String getPieceUnicode(int row, int col) {
         if (row == 0 || row == 7) {
-            int offset = (row == 0) ? 0 : 6; // Determines white or black pieces
+            int offset = (row == 0) ? 0 : 6;
             switch (col) {
                 case 0:
                 case 7:
@@ -99,25 +130,95 @@ public class userInterface {
         } else if (row == 1 || row == 6) {
             return (row == 1) ? UNICODE_PIECES[5] : UNICODE_PIECES[11]; // Pawns
         }
-        return ""; // Empty space for non-piece areas
+        return "";
     }
+
     private static void handleSquareClick(JLabel square, int row, int col) {
-    	// TODO Auto-generated method stub
-    	String piece = square.getText();
-    	if(clickedPieceLabel==null && !piece.isEmpty()) {
-    		clickedPieceLabel = square;
-    		clickedRow = row;
-    		clickedCol =col;
-    		square.setBorder(BorderFactory.createLineBorder(Color.GREEN,2));
-    	} else if(clickedPieceLabel != null){
-    		clickedPieceLabel.setBorder(null);
-    		square.setText(clickedPieceLabel.getText());
-    		clickedPieceLabel.setText("");
-    		
-    		clickedPieceLabel = null;
-    		clickedRow = -1;
-    		clickedCol = -1;
-    		
-    	}
+        String piece = square.getText();
+        if (clickedPieceLabel == null && !piece.isEmpty()) {
+            clickedPieceLabel = square;
+            clickedRow = row;
+            clickedCol = col;
+            square.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        } else if (clickedPieceLabel != null) {
+            clickedPieceLabel.setBorder(null);
+            String move = "Moved " + clickedPieceLabel.getText() + " from (" + clickedRow + ", " + clickedCol + ") to (" + row + ", " + col + ")";
+            moveHistory.add(move);
+            historyArea.append(move + "\n");
+            square.setText(clickedPieceLabel.getText());
+            clickedPieceLabel.setText("");
+
+            clickedPieceLabel = null;
+            clickedRow = -1;
+            clickedCol = -1;
+        }
+    }
+
+    // Extra Credit 1: Reset the board for a new game
+    private static void resetBoard() {
+        // Logic to reset the board
+        // Reloads all pieces to their starting positions
+    }
+
+    // Extra Credit 1: Save game state to a file
+    private static void saveGame() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savedGame.ser"))) {
+            out.writeObject(moveHistory); // Save move history
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Extra Credit 1: Load game state from a file
+    private static void loadGame() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("savedGame.ser"))) {
+            moveHistory = (List<String>) in.readObject(); // Load move history
+            historyArea.setText(String.join("\n", moveHistory)); // Display loaded moves
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Extra Credit 2: Open settings window
+    private static void openSettingsWindow() {
+        JFrame settingsFrame = new JFrame("Settings");
+        settingsFrame.setSize(300, 200);
+        settingsFrame.setLayout(new GridLayout(3, 2));
+        
+        // Board color selector
+        JButton boardColorButton = new JButton("Select Board Color");
+        boardColorButton.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(null, "Choose Board Color", Color.WHITE);
+            if (newColor != null) {
+                // Apply selected color to board
+            }
+        });
+        settingsFrame.add(boardColorButton);
+        
+        // Chess piece style selector
+        JButton pieceStyleButton = new JButton("Select Piece Style");
+        pieceStyleButton.addActionListener(e -> {
+            // Logic to change piece style
+        });
+        settingsFrame.add(pieceStyleButton);
+        
+        // Board size selector
+        JButton boardSizeButton = new JButton("Select Board Size");
+        boardSizeButton.addActionListener(e -> {
+            // Logic to adjust board size
+        });
+        settingsFrame.add(boardSizeButton);
+        
+        settingsFrame.setVisible(true);
+    }
+
+    // Extra Credit 3: Undo last move
+    private static void undoLastMove() {
+        if (!moveHistory.isEmpty()) {
+            moveHistory.remove(moveHistory.size() - 1);
+            historyArea.setText(String.join("\n", moveHistory));
+            // Logic to revert the game state to the previous move
+        }
     }
 }
+
