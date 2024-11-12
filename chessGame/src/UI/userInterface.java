@@ -159,13 +159,14 @@ public class userInterface {
         }
     }
 
-    private static void checkCondition(String removedPiece){
-        String whiteKing = "\u2654";
-        String blackKing = "\u265A";
-        if ((removedPiece.equals(blackKing)) || (removedPiece.equals(whiteKing)));
-        {
+    private static void checkCondition(String removedPiece) {
+        String whiteKing = "\u2654";  // Unicode for white king
+        String blackKing = "\u265A";  // Unicode for black king
+        
+        // Check if the removed piece is either the white or black king
+        if (removedPiece.equals(blackKing) || removedPiece.equals(whiteKing)) {
             JOptionPane.showMessageDialog(null, "King's Dead 💀", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
+            System.exit(0);  // Exit the game
         }
     }
 
